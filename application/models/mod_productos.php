@@ -25,15 +25,6 @@ class mod_productos extends CI_Model {
 		return $consulta->result_array();
 	}
 	
-	/*listar productos destacados (buena)
-	function prod_destacados() 
-	{
-		
-		$this->db->from('productos');
-		$this->db->where('destacado like 1');
-		$resultado = $this->db->get();
-		return $resultado->result_array();
-	}*/
 	
 	function prod_destacados($inicio,$limit) 
 	{

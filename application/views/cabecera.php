@@ -1,5 +1,6 @@
 <div>
 	<p>Tecnonuba</p>
+	<p><a href="<?=site_url("controlador_usuarios/alta");?>">Nuevo Usuario</a></p>
 	<div name="categorias">
 		<table border="1">
 			<tr>
