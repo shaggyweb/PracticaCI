@@ -19,19 +19,19 @@
 			</ul>
 		</nav>
 	</div>
-	<div name="form_ingreso">
-		<nav class="navbar navbar-default" role="navigation">
-			<form  class="navbar-form navbar-left" method="post" action="<?=base_url('index.php/controlador_usuarios/login')?>">
-				<table>
-					<tr>
-						<td>Usuario: </td><td><input type="text" class ="form-control" name="usuario" value="<?php echo set_value('usuario'); ?>"/>
-							<?php echo form_error('usuario'); ?></td>
-						<td>Clave: </td><td><input type="password" class ="form-control" name="clave" value="<?php echo set_value('clave'); ?>"/>
-							<?php echo form_error('clave'); ?></td>
-						<td><input type="submit" class="btn btn-primary" name="enviar" value="Ingresar"/></td>
-					</tr>
-				</table>
-			</form>
+	<div name="panel_usuer" class="panel_user">
+		<div>
+			<nav class="navbar navbar-default" role="navigation">
+			 <ul class="nav navbar-nav">
+			 	<li class="mensaje_user">
+			 		<?="Bienvenido ".$this->session->userdata('user');?>
+			 	</li>
+			 	<li><a href="#">Modificar Datos</a></li>
+			 	<li><a href="#">Reestablecer Password</a></li>
+			 	<li><a href="#"><img src="<?= base_url('/Assets/img/carrito2.png')?>"/></a></li>
+			 	<li><a href="<?=site_url("controlador_usuarios/logout");?>">Cerrar</a></li>
+			</ul>
 		</nav>
+		</div>
 	</div>
 </div>

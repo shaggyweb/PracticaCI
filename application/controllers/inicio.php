@@ -25,7 +25,7 @@ class inicio extends controlador{
 
 		$cuerpo = $this->load->view('lista_productos', $datos, TRUE);
 
-		$this->plantilla($cuerpo);
+		$this->Plantilla($cuerpo);
 
 	}
 

@@ -10,8 +10,19 @@ class controlador extends CI_Controller {
 	{
 		//Seleccion de todas las categorías para mostrarlas como enlace en la cabecera
 		$categoria['categoria'] = $this->mod_productos->listar_categorias();
+		
+		//Comprobacion de si el usuario está dentro o no, cargará una cabecera distinta
+		
+		if(!$this->session->userdata('user'))
+		{
+			$cabecera= $this->load->view("cabecera",$categoria, true); //Carga de cabecera por defecto
+		}
+		else
+		{ 
+			$cabecera= $this->load->view("usuario_dentro",$categoria, true); //Carga de cabecera que muestra las opciones del usuario
+		}
 	
-		$cabecera= $this->load->view("cabecera",$categoria, true);
+		
 	
 		$pie= $this->load->view("pie", 0, true);
 	

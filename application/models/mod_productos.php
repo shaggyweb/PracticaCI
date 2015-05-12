@@ -43,4 +43,48 @@ class mod_productos extends CI_Model {
 		$resultado = $this->db->get();
 		return $resultado->num_rows();
 	}
+	
+	//calculo del total de productos de una categoría
+	function total_product_categ($datos) {
+		$this->db->from('productos');
+		$this->db->where('id_cat', $datos);
+		$resultado = $this->db->get();
+		return $resultado->num_rows();
+	}
+	
+	/**
+	 * Busca productos por categorias
+	 * recogidos en $datos
+	 * @param type $datos
+	 * @return type
+	 */
+	function productos_categoria($datos, $inicio = 0, $limit = 0) {
+		$this->db->from('productos');
+		$this->db->limit($limit, $inicio);
+		$this->db->where('id_cat', $datos);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	
+	function nombre_categoria($id){
+		$this->db->from('categorias');
+		$this->db->where('id_cat', $id);
+		$query = $this->db->get();
+	
+		$reg= $query->row(); // row(): Devuelve el primer registro
+		if ($reg){
+			return $reg->nombre;
+		}else{
+			return '';
+		}
+	}
+	
+	function detalle_producto($id)
+	{
+		$this->db->from('productos');
+		$this->db->where('id_prod', $id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 }
