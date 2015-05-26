@@ -1,0 +1,28 @@
+.titulo
+{
+	text-align: center;
+}
+
+.descuento
+{
+	color:red;
+}
+
+.mensaje_user
+{
+	font-size: xx-large; 
+	font-family: cursive;
+	color:orange;
+}
+
+.ventana{
+
+	display:none;      <!-- -------------------------> es importante ocultar las ventanas previamente -->
+	font-family:Arial, Helvetica, sans-serif;
+	color:#808080;
+	line-height:28px;
+	font-size:15px;
+	text-align:justify;
+
+
+}

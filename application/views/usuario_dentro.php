@@ -15,7 +15,8 @@
 					<li><a href="<?= site_url('/controlador_productos/productos_categoria/'.$categ['id_cat'])?>"><?=$categ['nombre']?></a></li>
 					
 				<?php endforeach; ?>
-				<li><a href="<?=site_url("controlador_usuarios/alta");?>">Nuevo Usuario</a></li>
+				<li><a href="<?=base_url('index.php/controlador_carrito/ver_carrito')?>"><img src="<?= base_url('/Assets/img/carrito2.png')?>"/></a></li>
+				<li><a href="<?=site_url("/controlador_usuarios/alta");?>">Nuevo Usuario</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -26,9 +27,10 @@
 			 	<li class="mensaje_user">
 			 		<?="Bienvenido ".$this->session->userdata('user');?>
 			 	</li>
-			 	<li><a href="#">Modificar Datos</a></li>
+			 	<li><a href="<?=site_url("controlador_usuarios/mod_usuario");?>">Modificar Datos</a></li>
 			 	<li><a href="#">Reestablecer Password</a></li>
-			 	<li><a href="#"><img src="<?= base_url('/Assets/img/carrito2.png')?>"/></a></li>
+			 	<li><a href="<?=site_url("controlador_usuarios/dar_baja");?>">Dar Baja</a></li>
+			 	<li><a href="<?=site_url("controlador_carrito/mostrar_pedidos");?>">Mostrar Pedidos</a></li>
 			 	<li><a href="<?=site_url("controlador_usuarios/logout");?>">Cerrar</a></li>
 			</ul>
 		</nav>

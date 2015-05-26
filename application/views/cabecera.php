@@ -15,6 +15,7 @@
 					<li><a href="<?= site_url('/controlador_productos/productos_categoria/'.$categ['id_cat'])?>"><?=$categ['nombre']?></a></li>
 					
 				<?php endforeach; ?>
+				<li><a href="<?=base_url('index.php/controlador_carrito/ver_carrito')?>"><img src="<?= base_url('/Assets/img/carrito2.png')?>"/></a></li>
 				<li><a href="<?=site_url("controlador_usuarios/alta");?>">Nuevo Usuario</a></li>
 			</ul>
 		</nav>
@@ -24,8 +25,8 @@
 			<form  class="navbar-form navbar-left" method="post" action="<?=base_url('index.php/controlador_usuarios/login')?>">
 				<table>
 					<tr>
-						<td>Usuario: </td><td><input type="text" class ="form-control" name="usuario" value="<?php echo set_value('usuario'); ?>"/>
-							<?php echo form_error('usuario'); ?></td>
+						<td>Usuario: </td><td><input type="text" class ="form-control" name="usu" value="<?php echo set_value('usu'); ?>"/>
+							<?php echo form_error('usu'); ?></td>
 						<td>Clave: </td><td><input type="password" class ="form-control" name="clave" value="<?php echo set_value('clave'); ?>"/>
 							<?php echo form_error('clave'); ?></td>
 						<td><input type="submit" class="btn btn-primary" name="enviar" value="Ingresar"/></td>

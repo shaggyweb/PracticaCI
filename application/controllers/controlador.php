@@ -36,9 +36,9 @@ class controlador extends CI_Controller {
 	
 	/**
 	 * Funcion para paginar los productos
-	 * @param type $url localizador del controlador donde nos encontramos
-	 * @param type $total_pagina
-	 * @param type $total_filas
+	 * @param type $url  url del paginador que se corresponde con el controlador donde nos encontramos
+	 * @param type $total_pagina numero de elementos por página
+	 * @param type $total_filas numero total de filas
 	 * @return type devuelve el paginador
 	 */
 	function paginador($url,$total_pagina,$total_filas,$segm=4){

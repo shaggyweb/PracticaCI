@@ -86,5 +86,26 @@ class mod_productos extends CI_Model {
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+	
+	function obtener_producto_id($id) {
+        $this->db->where(array('id_prod' => $id));
+        $query = $this->db->get('productos');
+        return $query->row_array();
+    }
+    
+    function hay_existencias($id)
+    {
+    	$this->db->select('stock');
+    	$this->db->where('id_prod', $id);
+    	return $this->db->get('productos')->row_array()['stock'];
+    }
+    
+    function actualizacion_stock($cod_prod, $actual_stock)
+    {
+    	$this->db->where('id_prod', $cod_prod);
+    	$this->db->update('productos', array(
+    			'stock' => $actual_stock
+    	));
+    }
 
 }
