@@ -88,7 +88,7 @@ class controlador_carrito extends controlador {
     			'qty' => $cantidad-1
     			
     	);
-    	//despuÈs simplemente utilizamos la funciÛn update de la librerÌa cart
+    	//despu√©s simplemente utilizamos la funci√≥n update de la librer√≠a cart
     	//para actualizar el carrito pasando el array a actualizar
     	$this->cart->update($producto);
        	redirect('controlador_carrito/ver_carrito');
@@ -102,7 +102,7 @@ class controlador_carrito extends controlador {
     			'qty' => $cantidad+1
     			
     	);
-    	//despuÈs simplemente utilizamos la funciÛn update de la librerÌa cart
+    	//despu√©s simplemente utilizamos la funci√≥n update de la librer√≠a cart
     	//para actualizar el carrito pasando el array a actualizar
     	$this->cart->update($producto);
     	redirect('controlador_carrito/ver_carrito');
@@ -115,7 +115,7 @@ class controlador_carrito extends controlador {
     			'qty' => 0
     			 
     	);
-    	//despuÈs simplemente utilizamos la funciÛn update de la librerÌa cart
+    	//despu√©s simplemente utilizamos la funci√≥n update de la librer√≠a cart
     	//para actualizar el carrito pasando el array a actualizar
     	$this->cart->update($producto);
     	redirect('controlador_carrito/ver_carrito');
@@ -155,7 +155,7 @@ class controlador_carrito extends controlador {
     			}
     			else
     			{
-    				//CreaciÛn del pedido con los productos y datos del cliente
+    				//Creaci√≥n del pedido con los productos y datos del cliente
     				
     				$usuario=$this->session->userdata('user');
     				$cliente=$this->mod_usuarios->buscar_usuario($usuario);
@@ -201,9 +201,12 @@ class controlador_carrito extends controlador {
     				}
     				//$this->ver_ultimo_pedido($ultimo_id_pedido);
     				$this->ver_ultimo_pedido($ultimo_id_pedido);
+    				$this->envio_detalles($this->crear_mensaje(),$ultimo_id_pedido);
     				$this->cart->destroy();//vaciamos el carrito
     				$this->crear_factura($ultimo_id_pedido); //generamos el pdf de la factura
     				$this->enviar_email($ultimo_id_pedido);
+    				
+    				
     				//$this->ver_ultimo_pedido($ultimo_id_pedido);
     				//redirect(site_url());
     			}	
@@ -213,7 +216,7 @@ class controlador_carrito extends controlador {
     
     function comprobar_existencias()
     {
-    	$productos_existencias=[]; //Array que guardar· informacion de productos sin existencia
+    	$productos_existencias=[]; //Array que guardar√° informacion de productos sin existencia
     	$productos_carrito=$this->cart->contents(); //Array con los productos existentes en el carrito de compra
     	
     	foreach ($productos_carrito as $producto)
@@ -235,10 +238,7 @@ class controlador_carrito extends controlador {
     	$datos['productos']=$this->cart->contents();
     	$datos['total'] = $this->cart->total();
     	$datos['fecha']=$this->transformar_fecha($datos['pedido'][0]['fecha']);
-    	//$datos['linea_pedido']=$this->mod_pedidos->buscar_linea_pedidos($pedido);
-    	//foreach ($linea_pedido as $l) {
-    	//$producto = $this->productos_model->obten_producto($l['producto_id']);
-    	//$datos['usuario']=$this->mod_usuarios->bucar_usuario($usuario);
+   
     	$cuerpo = $this->load->view('resumen_pedido', $datos, true);
     	$this->Plantilla($cuerpo);
     	
@@ -267,7 +267,7 @@ class controlador_carrito extends controlador {
     	
     	$pedidos=[];
     	
-    	foreach ($lista_pedidos as $pedido) //bucle para transformar la fecha del pedido a formato dia/mes/aÒo
+    	foreach ($lista_pedidos as $pedido) //bucle para transformar la fecha del pedido a formato dia/mes/a√±o
     	{
     		$fecha_mod=$this->transformar_fecha($pedido['fecha']);
     		$pedido['fecha']=$fecha_mod;
@@ -282,61 +282,32 @@ class controlador_carrito extends controlador {
     	$cuerpo = $this->load->view('lista_pedidos', $datos, true);
     	$this->Plantilla($cuerpo);
     	
-    	/*
-    	  function pedidos_anteriores(){
-        $usuario['usuario']= $this->session->userdata('usuario');
-       
-        $id=$this->clientes_modelo->datos_cliente($usuario);
-       
-       $historico= $this->pedidos_modelo->usuario_pedidos($id['id']);
-       $pedidos=[];
-       
-       
-        foreach ($historico as $pedido) {
-           $fecha_pedido =  new DateTime($pedido['fecha_pedido']);
-           $pedido['fecha_pedido']=$fecha_pedido->format("d-m-Y");
-           
-           array_push($pedidos, $pedido);
-        }
-       
-        if($pedidos){
-            
-                $data['pedidos']= $pedidos;
-                //print_r($pedidos[0]);
-                $cuerpo = $this->load->view('historico_pedido', $data, TRUE);
-                $this->plantilla($cuerpo);
-            
-        }else{
-            $this->session->set_flashdata('informe', 'No existe ning˙n pedido almacenado');
-            redirect(site_url('usuario_controlador/panel_control'));
-            
-        }
-       
-    }
-    	 */
+    	
     }
     
-    /*function detalles_pedido($pedido)
+    function detalles_pedido($pedido)
     {
-    	$datos['pedido']=$this->mod_pedidos->buscar_pedido($pedido);
-    	$datos['linea_pedido']=$this->mod_pedidos->buscar_linea_pedidos($pedido);
-    	$articulos=$datos['linea_pedido'];
-    	$nombre_articulo=[];
-    	//Transformamos la fecha
-    	$fecha_mod=$this->transformar_fecha($datos['pedido'][0]['fecha']);
-    	$datos['pedido'][0]['fecha']=$fecha_mod;
-    	//print_r($datos['pedido'][0]['fecha']);
-    	foreach($articulos as $articulo)
+    	
+    	$linea_pedido=$this->mod_pedidos->buscar_linea_pedidos($pedido);
+    	
+    	$productos=[];
+    	
+    	foreach ($linea_pedido as $valor=>$clave)
     	{
-    		$producto=obtener_producto_id($articulo['id_prod']);
-    		$nombre_articulo=$producto['nombre'];
+    		$producto=$this->mod_productos->obtener_producto_id($clave['id_prod']);
+    		$clave['nombre']=$producto['nombre'];
+    		
+    		
+    		array_push($productos, $clave);
     	}
     	
-    	print_r($nombre_articulo);
-    	//$cuerpo = $this->load->view('detalles_pedido', $datos, true);
-    	//$this->Plantilla($cuerpo);
+    	$datos['productos']=$productos;
+    	//print_r($datos['productos']);
+    	//print_r($nombre_articulo);
+    	$cuerpo = $this->load->view('detalles_pedido', $datos, true);
+    	$this->Plantilla($cuerpo);
     	
-    }*/
+    }
     
    function anular_pedido($id)
    {
@@ -350,7 +321,7 @@ class controlador_carrito extends controlador {
    		else
    		{
    			
-    		$estado='A'; //estado A de cancelado
+    		$estado='A'; //estado A de anulado
     		$this->mod_pedidos->anular_pedidos($id,$estado);
     		
     		$this->mostrar_pedidos();
@@ -380,27 +351,22 @@ class controlador_carrito extends controlador {
    function crear_factura($id_pedido)
    {
    	
-   	//print_r($id_pedido);//buscar_linea_pedidos(array(
-           // 'pedido_id' => $pedido['id']
-   	
    		//obtenemos los datos del pedido
    		$pedido = $this->mod_pedidos->buscar_pedido($id_pedido);
-   		//print_r($pedido);
-   		//print_r($pedido[0]['nombre_cliente']);
-   		//var_dump($pedido);
+   		
    		//obtenemos los productos del pedido
    		$linea_pedido = $this->mod_pedidos->buscar_linea_pedidos($pedido[0]['cod_pedido']);
    	
    		/*
    		 * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
-   		 * heredÛ todos las variables y mÈtodos de fpdf
+   		 * heredo todos las variables y metodos de fpdf
    		*/
    		$this->pdf = new pdf($pedido);
-   		// Agregamos una p·gina
+   		// Agregamos una p√°gina
    		$this->pdf->AddPage();
-   		// Define el alias para el n˙mero de p·gina que se imprimir· en el pie
+   		// Define el alias para el n√∫mero de p√°gina que se imprimir√° en el pie
    		$this->pdf->AliasNbPages();
-   		/* Se define el titulo, m·rgenes izquierdo, derecho y
+   		/* Se define el titulo, margenes, derecho y
    		 * el color de relleno predeterminado
    		*/
    	
@@ -469,9 +435,6 @@ function enviar_email($id_pedido)
    	$config['mailtype'] = 'html';
    	$this->email->initialize($config);
    	$this->email->from('aula4@iessansebastian.com', 'Tecnonuba');
-   	//$this->email->to('malcudia@gmail.com');
-   	//$this->email->to('shaggyweb@gmail.com');
-   	//$this->email->cc('malcudia@gmail.com');
    	$this->email->to($usuario[0]['correo']);
    	$this->email->subject('Factura Pedido ' . $id_pedido);
    	$this->email->message("<html><body><h2>Gracias por su compra. Le adjuntamos la factura de su pedido</h2></body></html>");
@@ -481,5 +444,59 @@ function enviar_email($id_pedido)
    	$this->email->send();
    	
    
+   }
+   
+   function crear_mensaje()
+   {
+   		//$datos_pedido=$this->mod_pedidos->buscar_pedido($pedido);
+   		
+   		$productos = $this->cart->contents();
+   		//$fecha_pedido=$this->transformar_fecha($datos_pedido[0]['fecha']);
+   		
+   		//Iniciamos parte del emsanje a enviar
+   		
+   		$mensaje="<html><body><h2>Gracias por su compra. A continuaci√≥n puede ver un resumen de su compra.</h2>
+   				<table border=\"1\">
+   						<tr><th>Producto</th><th>Precio Sin Descuento</th><th>Precio Descuento</th><th>Unidades</th><th>Total</th></tr>";
+   		
+   		foreach ($productos as $producto):
+   		
+   			$tot=$producto['price']*$producto['qty'];
+   			$mensaje=$mensaje."<tr><td>".$producto['name']."</td><td>".$producto['precio_no_descuento']."</td><td>".$producto['price']."</td>
+   				<td>".$producto['qty']."</td><td>".$tot."</td></tr>";
+   		            	
+   		endforeach;
+   		            	
+   		            	
+   		return $mensaje;
+
+   		//print_r($mensaje);
+   		            	
+   		        	
+   		
+   }
+   
+   function envio_detalles($texto,$id_pedido)
+   {
+   	//obtenemos los datos del pedido
+   	//$datos_pedido = $this->mod_pedidos->buscar_pedido($id_pedido);
+   	//obtenemos los datos del usuario
+   	$nombre_user=$this->session->userdata('user');
+   	$usuario=$this->mod_usuarios->buscar_usuario($nombre_user);
+   	//print_r($pedido);
+   	$config['protocol'] = 'smtp';
+   	$config['smtp_host'] = 'mail.iessansebastian.com';
+   	$config['smtp_user'] = 'aula4@iessansebastian.com';
+   	$config['smtp_pass'] = 'daw2alumno';
+   	$config['mailtype'] = 'html';
+   	$this->email->initialize($config);
+   	$this->email->from('aula4@iessansebastian.com', 'Tecnonuba');
+   	$this->email->to($usuario[0]['correo']);
+   	$this->email->subject('Detalle Pedido '.$id_pedido);
+   	$this->email->message($texto);
+   	//$fileName=APPPATH."../pdf/fact_pedido_n".$id_pedido.".pdf";
+   	//$this->email->attach($fileName);
+   	
+   	$this->email->send();
    }
 }

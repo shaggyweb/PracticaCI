@@ -10,25 +10,25 @@ class controlador_usuarios extends controlador
 		//Obtencion de todas las provincias para crear el select
 		$provincias['provincias'] = $this->mod_provincias->lista_provincias();
 		
-		//Establecimiento de las reglas de validaci髇
+		//Establecimiento de las reglas de validaci贸n
 		$this->form_validation->set_rules('nombre', 'nombre', 'trim|required');
 		$this->form_validation->set_rules('apellidos', 'apellidos', 'trim|required');
 		$this->form_validation->set_rules('dni', 'dni', 'trim|required|exact_length[9]|callback_DNI_valido');
 		$this->form_validation->set_rules('direccion', 'direccion', 'trim|required');
-		$this->form_validation->set_rules('postal', 'c骴igo postal', 'trim|required|integer|exact_length[5]');
+		$this->form_validation->set_rules('postal', 'postal', 'trim|required|integer|exact_length[5]');
 		$this->form_validation->set_rules('poblacion', 'poblacion', 'required|max_length[20]|xss_clean|alpha|trim');
 		$this->form_validation->set_rules('password', 'password', 'trim|required');
 		$this->form_validation->set_rules('usuario', 'usuario', 'trim|required|callback_comprobar_nombre');
 		$this->form_validation->set_rules('email', 'email', 'required|max_length[45]|valid_email|xss_clean|trim');
 		
-		//Edici髇 de los mensajes de error
+		//Edici贸n de los mensajes de error
 		$this->form_validation->set_message('required', 'Error. Campo Requerido');
-		$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve d韌itos');
-		$this->form_validation->set_message('valid_email', 'Error. Email no v醠ido');
+		$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve d铆gitos');
+		$this->form_validation->set_message('valid_email', 'Error. Email no v谩lido');
 		$this->form_validation->set_message('max_length', 'Error. Campo demasiado largo');
-		$this->form_validation->set_message('alpha', 'Error. El campo no puede contener n鷐eros');
-		$this->form_validation->set_message('integer', 'Error. El campo solo puede contener n鷐eros');
-		$this->form_validation->set_message('DNI_valido', 'Error. DNI no v醠ido');
+		$this->form_validation->set_message('alpha', 'Error. El campo no puede contener n煤meros');
+		$this->form_validation->set_message('integer', 'Error. El campo solo puede contener n煤meros');
+		$this->form_validation->set_message('DNI_valido', 'Error. DNI no v谩lido');
 		$this->form_validation->set_message('comprobar_nombre', 'Error. Nombre de usuario ya usado');
 		
 		//da formato a los errores
@@ -102,7 +102,7 @@ class controlador_usuarios extends controlador
 		
 		public function login()
 		{
-			//Establecimiento de las reglas de validaci髇
+			//Establecimiento de las reglas de validaci贸n
 			$this->form_validation->set_rules('clave', 'clave', 'trim|md5');
 			$this->form_validation->set_rules('usu', 'usu', 'trim');
 			
@@ -115,7 +115,7 @@ class controlador_usuarios extends controlador
 				{
 					
 					//Usuario logueado correctamente
-					//Inicio de sesi髇
+					//Inicio de sesi贸n
 					$this->session->set_userdata('user',$usuario);
 					$this->session->set_userdata('logueado',true);
 					
@@ -146,25 +146,25 @@ class controlador_usuarios extends controlador
 			
 			$datos['user']=$this->mod_usuarios->buscar_usuario($usuario)[0];
 			
-			//Establecimiento de las reglas de validaci髇
+			//Establecimiento de las reglas de validaci贸n
 			$this->form_validation->set_rules('nombre', 'nombre', 'trim|required');
 			$this->form_validation->set_rules('apellidos', 'apellidos', 'trim|required');
 			$this->form_validation->set_rules('dni', 'dni', 'trim|required|exact_length[9]|callback_DNI_valido');
 			$this->form_validation->set_rules('direccion', 'direccion', 'trim|required');
-			$this->form_validation->set_rules('postal', 'c骴igo postal', 'trim|required|integer|exact_length[5]');
+			$this->form_validation->set_rules('postal', 'postal', 'trim|required|integer|exact_length[5]');
 			$this->form_validation->set_rules('poblacion', 'poblacion', 'required|max_length[20]|xss_clean|alpha|trim');
-			$this->form_validation->set_rules('password', 'password', 'trim|required');
-			$this->form_validation->set_rules('usuario', 'usuario', 'trim|required');
+			//$this->form_validation->set_rules('password', 'password', 'trim|required');
+			//$this->form_validation->set_rules('usuario', 'usuario', 'trim|required');
 			$this->form_validation->set_rules('email', 'email', 'required|max_length[45]|valid_email|xss_clean|trim');
 			
-			//Edici髇 de los mensajes de error
+			//Edici贸n de los mensajes de error
 			$this->form_validation->set_message('required', 'Error. Campo Requerido');
-			$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve d韌itos');
-			$this->form_validation->set_message('valid_email', 'Error. Email no v醠ido');
+			$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve d铆gitos');
+			$this->form_validation->set_message('valid_email', 'Error. Email no v谩lido');
 			$this->form_validation->set_message('max_length', 'Error. Campo demasiado largo');
-			$this->form_validation->set_message('alpha', 'Error. El campo no puede contener n鷐eros');
-			$this->form_validation->set_message('integer', 'Error. El campo solo puede contener n鷐eros');
-			$this->form_validation->set_message('DNI_valido', 'Error. DNI no v醠ido');
+			$this->form_validation->set_message('alpha', 'Error. El campo no puede contener n煤meros');
+			$this->form_validation->set_message('integer', 'Error. El campo solo puede contener n煤meros');
+			$this->form_validation->set_message('DNI_valido', 'Error. DNI no v谩lido');
 			//$this->form_validation->set_message('comprobar_nombre', 'Error. Nombre de usuario ya usado');
 			
 			//da formato a los errores
@@ -180,9 +180,9 @@ class controlador_usuarios extends controlador
 				$user['cod_postal'] = $this->input->post('postal');
 				$user['cod_provincia'] = $this->input->post('select_provincias');
 				$user['poblacion'] = $this->input->post('poblacion');
-				$user['usuario'] = $this->input->post('usuario');
+				//$user['usuario'] = $this->input->post('usuario');
 				$user['correo'] = $this->input->post('email');
-				$user['clave'] = do_hash($this->input->post('password'),'md5');
+				//$user['clave'] = do_hash($this->input->post('password'),'md5');
 				
 				if($this->mod_usuarios->modificar_usuario($cod_usuario,$user))
 				{
@@ -253,15 +253,106 @@ class controlador_usuarios extends controlador
 		{
 			$this->mod_usuarios->baja_user($cod);
 			
-			//Al borrar el usuario (ponerlo no activo) cerramos la sesi髇 de dicho usuario
+			//Al borrar el usuario (ponerlo no activo) cerramos la sesi贸n de dicho usuario
 			$this->logout();
 		}
 		
 		public function logout()
 		{
-			$this->session->unset_userdata('user'); //cierre de sesi髇
-			$this->session->set_userdata('logueado',false); //cierre de sesi髇
+			$this->session->unset_userdata('user'); //cierre de sesi贸n
+			$this->session->set_userdata('logueado',false); //cierre de sesi贸n
 			redirect(site_url());
 		}
+		
+		public function reestablecer_pass()
+		{
+			$this->form_validation->set_rules('email', 'email', 'required|max_length[45]|valid_email|xss_clean|trim');
+			
+			$this->form_validation->set_message('valid_email', 'Error. Email no v谩lido');
+			$this->form_validation->set_message('required', 'Error. Campo Requerido');
+			
+			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+			
+			if ($this->form_validation->run() == TRUE)
+			{
+				$email = $this->input->post('email');
+				//comprobamos que existe el email en la BD
+				$query = $this->mod_usuarios->comprobar_mail($email);
+				if ($query) //la consulta devuelve alg煤n registro ppor lo que el email esta en la BD
+				{
+					$usuario['nombre'] = $query['usuario'];
+					$usuario['email'] = $query['correo'];
+					//$pass['password'] = md5('123456');
+					$cod_user= $query['cod_usuario'];
+					$cadena_aleatoria=$this->generar_cadena();
+					$nuevo_pass=do_hash($cadena_aleatoria,'md5');
+					//print_r($cod_user);
+					//print_r($nuevo_pass);
+					$this->mod_usuarios->nuevo_password($cod_user,$nuevo_pass);
+					$this->enviar_pass($cadena_aleatoria, $usuario);
+					
+					$cuerpo=$this->load->view('nuevo_pass_ok','',true);
+					
+					$this->Plantilla($cuerpo);
+					
+					
+					
+				}
+				
+					
+				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
+					
+				//$cabecera= $this->load->view("cabecera",$categoria, true);
+					
+				//$pie= $this->load->view("pie", 0, true);
+					
+					
+				//redirect(site_url());
+			}
+			else
+			{
+				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
+			
+				//$cabecera= $this->load->view("cabecera",$categoria, true);
+			
+				//$pie= $this->load->view("pie", 0, true);
+			
+				$cuerpo=$this->load->view('reestablecer_pass','',true);
+				$this->Plantilla($cuerpo);
+			}
+			
+		}
+		
+		//http://www.elcodigofuente.com/usando-rand-crear-cadena-aleatoria-806/
+		public function generar_cadena()
+		{
+			$caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"; //posibles caracteres a usar
+			$numerodeletras=4; //numero de letras para generar el texto
+			$cadena = ""; //variable para almacenar la cadena generada
+			for($i=0;$i<$numerodeletras;$i++)
+			{
+    			$cadena .= substr($caracteres,rand(0,strlen($caracteres)),1); /*Extraemos 1 caracter de los caracteres 
+				entre el rango 0 a Numero de letras que tiene la cadena */
+			}
+			return $cadena;
+		}
 
+		public function enviar_pass($nuevo_pass,$user)
+		{
+				$config['protocol'] = 'smtp';
+				$config['smtp_host'] = 'mail.iessansebastian.com';
+				$config['smtp_user'] = 'aula4@iessansebastian.com';
+				$config['smtp_pass'] = 'daw2alumno';
+				$config['mailtype'] = 'html';
+				$this->email->initialize($config);
+				$this->email->from('aula4@iessansebastian.com', 'Tecnonuba');
+				$this->email->to($user['email']);
+				$this->email->subject('Nuevo Password');
+				$this->email->message("<html><body><h2>Su nuevo password es: ".$nuevo_pass."</h2></body></html>");
+				//$fileName=APPPATH."../pdf/fact_pedido_n".$id_pedido.".pdf";
+				//$this->email->attach($fileName);
+			
+				$this->email->send();
+			
+		}
 }

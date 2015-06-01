@@ -17,7 +17,7 @@
 			</td><td><?php echo form_error('direccion'); ?></td>
 		</tr>
 		<tr>
-			<td>Código Postal </td><td><input type="text" class ="form-control" name="postal" size="5" maxlength="5" value="<?php echo set_value('postal'); ?>"/>
+			<td>Código Postal: </td><td><input type="text" class ="form-control" name="postal" size="5" maxlength="5" value="<?php echo set_value('postal'); ?>"/>
 			</td><td><?php echo form_error('postal'); ?></td>
 		</tr>
 		<tr>

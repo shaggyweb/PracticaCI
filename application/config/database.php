@@ -49,9 +49,12 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'tienda';
+//$db['default']['username'] = 'root';
+$db['default']['username'] = '2daw1415_mario';
+//$db['default']['password'] = '';
+$db['default']['password'] = 'vilesio%53';
+//$db['default']['database'] = 'tienda';
+$db['default']['database'] = '2daw1415_mario01';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

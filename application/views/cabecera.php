@@ -30,6 +30,7 @@
 						<td>Clave: </td><td><input type="password" class ="form-control" name="clave" value="<?php echo set_value('clave'); ?>"/>
 							<?php echo form_error('clave'); ?></td>
 						<td><input type="submit" class="btn btn-primary" name="enviar" value="Ingresar"/></td>
+						<td><a href="<?=site_url("controlador_usuarios/reestablecer_pass");?>">Reestablecer Password</a></td>
 					</tr>
 				</table>
 			</form>

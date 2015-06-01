@@ -14,7 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/PracticaCI';
+//$config['base_url']	= 'http://localhost/PracticaCI';
+$config['base_url']='http://iessansebastian.com/alumnos/2daw1415/mario';
 
 /*
 |--------------------------------------------------------------------------

@@ -44,7 +44,7 @@ class mod_productos extends CI_Model {
 		return $resultado->num_rows();
 	}
 	
-	//calculo del total de productos de una categoría
+	//calculo del total de productos de una categorÃ­a
 	function total_product_categ($datos) {
 		$this->db->from('productos');
 		$this->db->where('id_cat', $datos);

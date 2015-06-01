@@ -28,7 +28,6 @@
 			 		<?="Bienvenido ".$this->session->userdata('user');?>
 			 	</li>
 			 	<li><a href="<?=site_url("controlador_usuarios/mod_usuario");?>">Modificar Datos</a></li>
-			 	<li><a href="#">Reestablecer Password</a></li>
 			 	<li><a href="<?=site_url("controlador_usuarios/dar_baja");?>">Dar Baja</a></li>
 			 	<li><a href="<?=site_url("controlador_carrito/mostrar_pedidos");?>">Mostrar Pedidos</a></li>
 			 	<li><a href="<?=site_url("controlador_usuarios/logout");?>">Cerrar</a></li>

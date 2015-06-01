@@ -30,7 +30,7 @@
             //$this->SetY(38);
             //$this->SetX(-95);
             //Cell(20, 7, "Subtotal", '', 0, 'R', '1');
-            $this->Cell(50,10,"Cliente: {$this->pedido[0]['nombre_cliente']} {$this->pedido[0]['apellidos_cliente']} DNI: {$this->pedido[0]['dni']}",1,'C');
+            $this->Cell(90,10,"Cliente: {$this->pedido[0]['nombre_cliente']} {$this->pedido[0]['apellidos_cliente']} DNI: {$this->pedido[0]['dni']}",1,'C');
             //$this->Cell(80, 7, "Cliente:", 0, 1, 'L', 0);
             //$this->SetFont('Arial', 'I', 10);
            

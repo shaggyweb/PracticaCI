@@ -8,10 +8,10 @@ class controlador extends CI_Controller {
 	 */
 	function Plantilla($cuerpo)
 	{
-		//Seleccion de todas las categorías para mostrarlas como enlace en la cabecera
+		//Seleccion de todas las categorÃ­as para mostrarlas como enlace en la cabecera
 		$categoria['categoria'] = $this->mod_productos->listar_categorias();
 		
-		//Comprobacion de si el usuario está dentro o no, cargará una cabecera distinta
+		//Comprobacion de si el usuario estÃ¡ dentro o no, cargarÃ¡ una cabecera distinta
 		
 		if(!$this->session->userdata('user'))
 		{
@@ -37,7 +37,7 @@ class controlador extends CI_Controller {
 	/**
 	 * Funcion para paginar los productos
 	 * @param type $url  url del paginador que se corresponde con el controlador donde nos encontramos
-	 * @param type $total_pagina numero de elementos por página
+	 * @param type $total_pagina numero de elementos por pÃ¡gina
 	 * @param type $total_filas numero total de filas
 	 * @return type devuelve el paginador
 	 */
@@ -49,7 +49,7 @@ class controlador extends CI_Controller {
 		$config['per_page'] = $total_pagina;
 		$config['num_links'] = 2;
 		$config['first_link'] = 'Primero';
-		$config['last_link'] = 'Último';
+		$config['last_link'] = 'Ãšltimo';
 		$config['full_tag_open'] = '<div id="paginacion">';
 		$config['full_tag_close'] = '</div>';
 	

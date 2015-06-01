@@ -7,7 +7,7 @@ class mod_usuarios extends CI_Model {
 	}
 
 	/**
-	 *  Función para insertar clientes
+	 *  FunciÃ³n para insertar clientes
 	 * @param type $data array de datos
 	 */
 	function alta_usuario ($data){
@@ -70,5 +70,30 @@ class mod_usuarios extends CI_Model {
 		$this->db->where('cod_usuario', $cod);
 		$this->db->update('usuarios', $usuario);
 		
+	}
+	
+	function comprobar_mail($email)
+	{
+		$this->db->where('correo',$email);
+		$consulta= $this->db->get('usuarios');
+		if($consulta->result())
+		{
+			return $consulta->row_array();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function nuevo_password($cod_user,$nuevo_pass)
+	{
+		//print_r($cod_user);
+		//print_r($nuevo_pass);
+		$datos = array(
+				'clave' => $nuevo_pass
+		);
+		$this->db->where('cod_usuario', $cod_user);
+		$this->db->update('usuarios', $datos);
 	}
 }
