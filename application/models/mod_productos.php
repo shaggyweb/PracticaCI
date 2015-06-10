@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Modelo Productos
+ * Contiene toda la funcionalidad de los productos
+ * @author Mario Vilches Nieves
+ */
 class mod_productos extends CI_Model {
 
 	public function __construct() {
@@ -7,7 +12,7 @@ class mod_productos extends CI_Model {
 	}
 	
 	/**
-	 * obtener todos las categorias de la tienda
+	 * Método para obtener todas las categorias de la tienda
 	 * @return type
 	 */
 	function listar_categorias()
@@ -18,14 +23,20 @@ class mod_productos extends CI_Model {
 	}
 	
 	
-	//listar todos los productos
+	/**
+	 * Método para listar todos los productos
+	 */
 	function listar_productos()
 	{
 		$consulta = $this->db->get('productos');
 		return $consulta->result_array();
 	}
 	
-	
+	/**
+	 * Método para mostrar los productos destacados
+	 * @param unknown $inicio
+	 * @param unknown $limit
+	 */
 	function prod_destacados($inicio,$limit) 
 	{
 		$this->db->limit($limit, $inicio);
@@ -36,7 +47,9 @@ class mod_productos extends CI_Model {
 	}
 	
 	
-	//calculo del total de productos destacados
+	/**
+	 * Método para calcular el total de productos destacados
+	 */
 	function prod_destacados_total() {
 		$this->db->from('productos');
 		$this->db->where('destacado like 1');
@@ -45,6 +58,10 @@ class mod_productos extends CI_Model {
 	}
 	
 	//calculo del total de productos de una categoría
+	/**
+	 * Método para calcular el total de productos de una categoría
+	 * @param string $datos ID de la categoría
+	 */
 	function total_product_categ($datos) {
 		$this->db->from('productos');
 		$this->db->where('id_cat', $datos);
@@ -53,8 +70,7 @@ class mod_productos extends CI_Model {
 	}
 	
 	/**
-	 * Busca productos por categorias
-	 * recogidos en $datos
+	 * Método para buscas productos por categorias
 	 * @param type $datos
 	 * @return type
 	 */
@@ -66,6 +82,11 @@ class mod_productos extends CI_Model {
 		return $query->result_array();
 	}
 	
+	/**
+	 * Método que devuelve el nombre de una categoría
+	 * @param integer $id ID de la categoría
+	 * @return string Nombre de la categoría
+	 */
 	function nombre_categoria($id){
 		$this->db->from('categorias');
 		$this->db->where('id_cat', $id);
@@ -79,6 +100,10 @@ class mod_productos extends CI_Model {
 		}
 	}
 	
+	/**
+	 * Método que devuelve los detalles de un producto
+	 * @param integer $id ID del producto
+	 */
 	function detalle_producto($id)
 	{
 		$this->db->from('productos');
@@ -87,12 +112,20 @@ class mod_productos extends CI_Model {
 		return $query->result_array();
 	}
 	
+	/**
+	 * Método que devuelve los datos de un producto
+	 * @param integer $id ID del producto
+	 */
 	function obtener_producto_id($id) {
         $this->db->where(array('id_prod' => $id));
         $query = $this->db->get('productos');
         return $query->row_array();
     }
     
+    /**
+     * Método que devuelve el stock de un producto
+     * @param integer $id ID del producto
+     */
     function hay_existencias($id)
     {
     	$this->db->select('stock');
@@ -100,6 +133,11 @@ class mod_productos extends CI_Model {
     	return $this->db->get('productos')->row_array()['stock'];
     }
     
+    /**
+     * Método que actualiza el stock de un producto
+     * @param integer $cod_prod Código del producto
+     * @param integer $actual_stock Nuevo stock del producto tras venta
+     */
     function actualizacion_stock($cod_prod, $actual_stock)
     {
     	$this->db->where('id_prod', $cod_prod);

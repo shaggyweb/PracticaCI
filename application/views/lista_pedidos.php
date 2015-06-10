@@ -3,7 +3,8 @@
 </div>
 <div name="pedidos">
 	<table class="table table-hover">
-		<tr><th>Cod.Pedido</th><th>Nombre</th><th>Apellidos</th><th>Fecha</th><th>Estado</th><th>Dirección</th><th>Población</th></tr>
+	<?php $modo="imprime"?>
+		<tr><th>Cod.Pedido</th><th>Nombre</th><th>Apellidos</th><th>Fecha</th><th>Estado</th><th>Dirección</th><th>Población</th><th>Anular</th><th>Factura</th></tr>
         
 			<?php foreach ($pedidos as $pedido) : ?>
 			<tr>
@@ -15,7 +16,7 @@
             	<td><?= $pedido['direccion'] ?></td>
             	<td><?= $pedido['poblacion'] ?></td>
             	<td><a href="<?= site_url('controlador_carrito/anular_pedido/'. $pedido['cod_pedido'])?>"><img src="<?= base_url('/Assets/img/icono_eliminar.png')?>"/></a></td>
-            	<td><a href="<?= site_url('controlador_carrito/crear_factura/'. $pedido['cod_pedido'])?>"><img src="<?= base_url('/Assets/img/icono_sumar.png')?>"/></a></td>
+            	<td><a href="<?= site_url('controlador_carrito/crear_factura/'. $pedido['cod_pedido'].'/'.$modo)?>"><img src="<?= base_url('/Assets/img/icono_factura.png')?>"/></a></td>
            		<td><a href="<?= site_url('controlador_carrito/detalles_pedido/'. $pedido['cod_pedido'])?>">Detalles</a></td>
         	</tr>
         	

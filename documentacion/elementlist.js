@@ -1,0 +1,3 @@
+
+var ApiGen = ApiGen || {};
+ApiGen.elements = [["c","agregador_tienda"],["c","controlador"],["c","controlador_carrito"],["c","controlador_productos"],["c","controlador_usuarios"],["f","Error()"],["c","FPDF"],["f","GetInfoFromTrueType()"],["f","GetInfoFromType1()"],["c","inicio"],["c","JSON_WebServer_Controller"],["f","LoadMap()"],["f","MakeDefinitionFile()"],["f","MakeFont()"],["f","MakeFontDescriptor()"],["f","MakeFontEncoding()"],["f","MakeWidthArray()"],["f","Message()"],["c","mod_pedidos"],["c","mod_productos"],["c","mod_provincias"],["c","mod_usuarios"],["f","Notice()"],["c","Pdf"],["c","PDF"],["f","SaveToFile()"],["c","TTFParser"],["f","Warning()"],["c","Welcome"]];

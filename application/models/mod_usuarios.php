@@ -1,4 +1,10 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Modelo Usuarios
+ * Contiene toda la funcionalidad de los usuarios
+ * @author Mario Vilches Nieves
+ */
 class mod_usuarios extends CI_Model {
 
 	public function __construct()
@@ -7,17 +13,23 @@ class mod_usuarios extends CI_Model {
 	}
 
 	/**
-	 *  Función para insertar clientes
-	 * @param type $data array de datos
+	 * Método para insertar clientes
+	 * @param array Array de datos del usuario
 	 */
 	function alta_usuario ($data){
 		$this->db->insert('usuarios',$data);
 	}
 	
+	/**
+	 * Método para logueaar el usuario
+	 * @param string $usuario Nombre del usuario
+	 * @param string $clave Clave del usuario
+	 * @return boolean true si los datos son correctos para el logueo
+	 */
 	function login($usuario,$clave)
 	{
 		$sql = "select * from usuarios where usuario = '".$usuario."' AND clave = '".$clave."' and activo=1;";
-		//print_r($sql);
+		
 		$query = $this->db->query($sql);
 		if($query->num_rows() == 0)
 		{
@@ -30,6 +42,10 @@ class mod_usuarios extends CI_Model {
 		
 	}
 	
+	/**
+	 * Método para buscar un usuario según su nombre de usuario
+	 * @param string $usuario Nombre de usuario a buscar
+	 */
 	function buscar_usuario($usuario){
 		$sql=$this->db->query("select * from usuarios
 				where usuario = \"$usuario\"
@@ -38,6 +54,12 @@ class mod_usuarios extends CI_Model {
 		return $sql->result_array();
 	}
 	
+	/**
+	 * Método para modificaar los datos de un usuario
+	 * @param integer $cod_usuario Código del usuario a modificar
+	 * @param array $datos Datos del usuario a modificar
+	 * @return boolean
+	 */
 	function modificar_usuario($cod_usuario, $datos){
 		$this->db->where('cod_usuario', $cod_usuario);
 	
@@ -50,6 +72,10 @@ class mod_usuarios extends CI_Model {
 		}
 	}
 	
+	/**
+	 * Método para buscar un usuario según su nombre de usuario
+	 * @param string $nombre Nombre de usuario a buscar
+	 */
 	function existe_nombre_user($nombre)
 	{
 	
@@ -61,6 +87,10 @@ class mod_usuarios extends CI_Model {
 		
 	}
 	
+	/**
+	 * Método para modificar el estado de un usuario de activo a inactivo
+	 * @param string $cod Código de usuario
+	 */
 	function baja_user($cod)
 	{
 		$usuario = array(
@@ -72,6 +102,11 @@ class mod_usuarios extends CI_Model {
 		
 	}
 	
+	/**
+	 * Método para buscar un email en la BD
+	 * @param string $email Email a buscar
+	 * @return boolean true si se encuenta en la BD
+	 */
 	function comprobar_mail($email)
 	{
 		$this->db->where('correo',$email);
@@ -86,10 +121,14 @@ class mod_usuarios extends CI_Model {
 		}
 	}
 	
+	/**
+	 * Método para modificar el password de un usuario
+	 * @param string $cod_user Código del usuario
+	 * @param string $nuevo_pass Nuevo Password
+	 */
 	function nuevo_password($cod_user,$nuevo_pass)
 	{
-		//print_r($cod_user);
-		//print_r($nuevo_pass);
+		
 		$datos = array(
 				'clave' => $nuevo_pass
 		);

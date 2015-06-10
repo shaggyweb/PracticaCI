@@ -3,83 +3,107 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require(__DIR__.'/controlador.php');
 
+/**
+ * Controlador Carrito
+ * Contiene toda la funcionalidad del carrito de compra
+ * @author Mario Vilches Nieves
+ */
+
 class controlador_carrito extends controlador {
     function __construct() {
         parent::__construct();
     }
     
+    /**
+     * Método añadir a carrito
+     * Añade artículos al carrito de la compra
+     */
     function anadir()
     {
     	
     
     			$cantidad=1;
     			$id_prod = $this->input->post('id_prod');
-    			//$cantidad= $this->input->post('cantidad');
+    			
     			//Consulta para buscar producto por id
     			$producto = $this->mod_productos->obtener_producto_id($id_prod);
-    	
-    		
-    			//print_r($this->mod_productos->detalle_producto($id_prod));
     			
     			//obtenemos el contenido del carrito
     			$carrito = $this->cart->contents();
-    			//var_dump($producto);
+    			
     			foreach ($carrito as $prod_carro) {
     				//si el id del producto es igual que uno que ya tengamos
-    				//en la cesta le sumamos uno a la cantidad
+    				//en el carrito le sumamos uno a la cantidad ya almacenada en carrito
     				if ($prod_carro['id'] == $id_prod) {
     					$cantidad = 1 + $prod_carro['qty'];
     				}
     			}
     			
-    			//$precio_descuento=$this->precio_descuento($producto['precio'], $producto['descuento']);
-    			//$precio_total=$this->precio_total_prod($precio_descuento, $cantidad);
+    			//precio descuento es igual al precio menos su descuento
     			$precio_descuento=$this->precio_descuento($producto['precio'], $producto['descuento']);
+    			//precio total es el que surge de multiplicar el precio con el descuento incluido y la cantidad del producto
     			$precio_total=$this->precio_total_prod($precio_descuento, $cantidad);
     			
     	
     			$datos = array(
     				'id' => $id_prod,
     				'qty' => $cantidad,
-    				//'price' => $producto['precio'],
     				'price'=>$precio_descuento,
     				'name' => $producto['nombre'],
     				'descuento' => $producto['descuento'],
     				'iva' => $producto['iva'],
-    				//'precio_descuento'=>$precio_descuento,
     				'precio_no_descuento'=>$producto['precio'],
     				'precio_total'=>$precio_total
     			);
     			$this->cart->insert($datos);
-    			
-    			//print_r($datos['precio_descuento']);
     		
     			redirect('controlador_carrito/ver_carrito');
     	
     		
     }
     
+    /**
+     * Método ver carrito de la compra
+     * Utilizado para mostrar los artículos contenidos en el carro de la compra
+     */
     function ver_carrito()
     {
     	$datos['productos'] = $this->cart->contents();
-    	//$datas['precio'] = $this->cart->total();
-    	//var_dump($datas);
+    	
     	$cuerpo = $this->load->view('ver_carro', $datos, true);
     	$this->Plantilla($cuerpo);
     }
     
+    /**
+     * Método que calcula precio de descuento de un producto
+     * @param float $precio Precio del producto
+     * @param float $descuento Descuento en € del producto
+     * @return float $precio_descuento Precio del producto con el descuento realizado
+     */
     function precio_descuento($precio, $descuento=0) 
     {
     	$precio_descuento=$precio-$descuento;
     	return $precio_descuento;
     }
     
+    /**
+     * Método que calcula el importe total de un producto
+     * Multiplica el precio del producto por el número de unidades de dicho producto
+     * @param float $precio_descuento Precio del producto con descuento incluido
+     * @param integer $cantidad Número de unidades del producto
+     * @return float $precio_total Importe total del producto
+     */
     function precio_total_prod($precio_descuento,$cantidad)
     {
     	$precio_total=$precio_descuento*$cantidad;
     	return $precio_total;
     }
     
+    /**
+     * Método para quitar una unidad de un producto en el carrito de compra
+     * @param integer $id ID del producto a disminuir en el carrito
+     * @param integer $cantidad Número de unidades del producto ya contenidas en el carrito
+     */
     function quitar_uni_prod($id,$cantidad)
     {
     	
@@ -94,6 +118,11 @@ class controlador_carrito extends controlador {
        	redirect('controlador_carrito/ver_carrito');
     }
     
+    /**
+     * Método para sumar una unidad de un producto den el carrito de compra
+     * @param integer $id ID del producto a aumentar en el carrito
+     * @param integer $cantidad Número de unidades del producto ya contenidas en el carrito
+     */
     function sumar_uni_prod($id,$cantidad)
     {
     	 
@@ -108,6 +137,11 @@ class controlador_carrito extends controlador {
     	redirect('controlador_carrito/ver_carrito');
     }
     
+    /**
+     * Método para eliminar por completo un producto del carrito de compra
+     * Se pondrá la canrtidad del producto a 0
+     * @param integer $id ID del producto a eliminar del carrito
+     */
     function eliminar_prod($id)
     {
     	$producto = array(
@@ -123,13 +157,18 @@ class controlador_carrito extends controlador {
     	
     }
     
+    /**
+     * Método para finalizar la compra contenida en el carrito de la compra
+     * Sólo se podrá terminar la compra si hay sesión iniciada. Se disminuirá el stock de los productos
+     * y se avisará de ausencia de stock de productos si fuera necesario. Se creará el pedido y la línea de pedido.
+     * Se mandarán los emails con la factura en PDF y con el detalle de la compra.
+     */
     function comprar()
     {
     	//obtener numero de productos en carrito
     	$num_productos = $this->cart->total_items();
     	$sin_existencias = $this->comprobar_existencias();
     	
-    	//$datos['productos']=$this->comprobar_existencias();
     	
     	if (!$this->session->userdata('logueado'))
     	{
@@ -197,23 +236,24 @@ class controlador_carrito extends controlador {
     					$actual_stock = $stock - $producto['qty'];
     					$this->mod_productos->actualizacion_stock($producto['id'], $actual_stock);
     					
-    					
     				}
-    				//$this->ver_ultimo_pedido($ultimo_id_pedido);
+    				
     				$this->ver_ultimo_pedido($ultimo_id_pedido);
-    				$this->envio_detalles($this->crear_mensaje(),$ultimo_id_pedido);
-    				$this->cart->destroy();//vaciamos el carrito
-    				$this->crear_factura($ultimo_id_pedido); //generamos el pdf de la factura
-    				$this->enviar_email($ultimo_id_pedido);
+    				$this->envio_detalles($this->crear_mensaje(),$ultimo_id_pedido); //enviamos email con detalles pedido
+    				$this->cart->destroy();//destruimos el carrito
+    				$modo="crea"; //variable para saber si guardo la factura o la muestro
+    				$this->crear_factura($ultimo_id_pedido,$modo); //generamos el pdf de la factura
+    				$this->enviar_email($ultimo_id_pedido); //enviamos email con PDF de la factura
     				
-    				
-    				//$this->ver_ultimo_pedido($ultimo_id_pedido);
-    				//redirect(site_url());
     			}	
     		}
     	}
     }
     
+    /**
+     * Método para comprobar las existencias de los productos
+     * @return array $productos_existencias Array que contendrá los productos sin existencias suficientes
+     */
     function comprobar_existencias()
     {
     	$productos_existencias=[]; //Array que guardará informacion de productos sin existencia
@@ -222,28 +262,36 @@ class controlador_carrito extends controlador {
     	foreach ($productos_carrito as $producto)
     	{
     		if ($producto['qty'] > $this->mod_productos->hay_existencias($producto['id'])) 
-    		{ //No hay stock suficiente
-    			//array_push($articulos, $producto['name']);
+    		{ 
+    			//No hay stock suficiente
+    			
     			$productos_existencias[]= $producto;
     		}
     	}
     	return $productos_existencias;
     }
     
+    /**
+     * Método para ver los detalles del último pedido realizado
+     */
     function ver_ultimo_pedido($pedido)
     {
-    	//$usuario=$this->session->userdata('user');
-    	//$ultimo_id_pedido=$this->mod_pedidos->ultimo_id();
+    	
     	$datos['pedido']=$this->mod_pedidos->buscar_pedido($pedido);
     	$datos['productos']=$this->cart->contents();
     	$datos['total'] = $this->cart->total();
     	$datos['fecha']=$this->transformar_fecha($datos['pedido'][0]['fecha']);
-   
+    
     	$cuerpo = $this->load->view('resumen_pedido', $datos, true);
     	$this->Plantilla($cuerpo);
     	
     }
     
+    /**
+     * Método para transformar una fecha en formato americano a formato europeo
+     * @param string $fecha1 Fecha en formato americano (año/mes/día)
+     * @return string $fecha2 Fecha en formato europeo (día/mes/año)
+     */
     function transformar_fecha($fecha1)
     {
     	//formato fecha americana
@@ -252,16 +300,14 @@ class controlador_carrito extends controlador {
     	return $fecha2;
     }
     
+    /**
+     * Método para mostrar la lista de pedidos de un cliente
+     */
     function mostrar_pedidos()
     {
     	$user=$this->session->userdata('user');
     	$usuario=$this->mod_usuarios->buscar_usuario($user);
     	$id_usuario=$usuario[0]['cod_usuario'];
-    	//print_r($id_usuario);
-    	//$datos['pedidos']=$this->mod_pedidos->pedidos_usuario($id_usuario);
-    	
-    	//$cuerpo = $this->load->view('lista_pedidos', $datos, true);
-    	//$this->Plantilla($cuerpo);
     	
     	$lista_pedidos=$this->mod_pedidos->pedidos_usuario($id_usuario);
     	
@@ -282,14 +328,16 @@ class controlador_carrito extends controlador {
     	$cuerpo = $this->load->view('lista_pedidos', $datos, true);
     	$this->Plantilla($cuerpo);
     	
-    	
     }
     
+    /**
+     * Método para mostrar el detalle de un pedido en concreto
+     * @param integer $pedido Código del pedido a mostrar
+     */
     function detalles_pedido($pedido)
     {
     	
     	$linea_pedido=$this->mod_pedidos->buscar_linea_pedidos($pedido);
-    	
     	$productos=[];
     	
     	foreach ($linea_pedido as $valor=>$clave)
@@ -302,13 +350,18 @@ class controlador_carrito extends controlador {
     	}
     	
     	$datos['productos']=$productos;
-    	//print_r($datos['productos']);
-    	//print_r($nombre_articulo);
+    	
     	$cuerpo = $this->load->view('detalles_pedido', $datos, true);
     	$this->Plantilla($cuerpo);
     	
     }
-    
+   
+    /**
+     * Método para anular un pedido
+     * Sólo se podrá anular si está marcado en la BD como P de pendiente.
+     * Si aparece como E, procesado, R, recepcionado, o como A, anulado no podrá anularse el pedido.
+     * @param integer $id ID del pedido a anular
+     */
    function anular_pedido($id)
    {
    		$pedido=$this->mod_pedidos->buscar_pedido($id);
@@ -328,6 +381,12 @@ class controlador_carrito extends controlador {
    		}
    }
    
+   /**
+    * Método para escribir el estado de un pedido
+    * Traduce el carácter contenido en la BD
+    * @param string $caracter Estado del pedido incluido en la BD
+    * @return string Devuelve el estado del pedido
+    */
    function traducir_estado($caracter)
    {
    		if ($caracter=="A")
@@ -348,7 +407,12 @@ class controlador_carrito extends controlador {
    		}
    }
    
-   function crear_factura($id_pedido)
+   /**
+    * Método para crear la factura de un pedido
+    * @param integer $id_pedido ID del pedido del que se crea la factura
+    * @param string $modo Permite crearnfactura, en un nuevo pedido, o mostrarla en una consulta de pedido
+    */
+   function crear_factura($id_pedido,$modo)
    {
    	
    		//obtenemos los datos del pedido
@@ -358,7 +422,7 @@ class controlador_carrito extends controlador {
    		$linea_pedido = $this->mod_pedidos->buscar_linea_pedidos($pedido[0]['cod_pedido']);
    	
    		/*
-   		 * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
+   		 *Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
    		 * heredo todos las variables y metodos de fpdf
    		*/
    		$this->pdf = new pdf($pedido);
@@ -387,20 +451,20 @@ class controlador_carrito extends controlador {
    			$this->pdf->Cell(15, 7, $x++, 'BL', 0, 'C', '0');
    			$this->pdf->Cell(85, 7, utf8_decode($producto['nombre']), 'B', 0, 'C', '0');
    			$this->pdf->Cell(20, 7, $producto['precio'] . " Eur", 'B', 0, 'C', '0');
-   			//$this->pdf->Cell(20, 7, $producto['iva'] . " %", 'B', 0, 'C', '0');
+   			
    			$this->pdf->Cell(20, 7, $l['cantidad'], 'B', 0, 'C', '0');
    			$this->pdf->Cell(20, 7, $l['descuento'] .  " Eur", 'B', 0, 'C', '0');
    			$total_prod = ($l['precio'] * $l['cantidad']);
-   			//$subtotal += $total;
+   			
    			$total+=$total_prod;
    			$this->pdf->Cell(20, 7, round($total_prod, 2) . " Eur", 'BR', 0, 'C', '0');
    			$this->pdf->Ln(7);
    			$iva += $total_prod * ($l['iva'] / 100);
-   			//$subtotal+=($total-$iva);
+   			
    		}
    		
    		$subtotal+=($total-$iva);
-   		//$iva=($total*)
+   		
    		
    		$this->pdf->Ln(7);
    		$this->pdf->setX(155);
@@ -412,14 +476,31 @@ class controlador_carrito extends controlador {
    		$this->pdf->setX(155);
    		$this->pdf->Cell(20, 7, "Total", 'TB', 0, 'R', '1');
    		$this->pdf->Cell(20, 7, round($subtotal + $iva, 2) . " Eur", 'B', 1, 'C', '0');
+   		
+   		if ($modo=="imprime")
+   		{
+   			$this->pdf->Output(APPPATH . "../pdf/fact_pedido_n" . $pedido[0]['cod_pedido'] . ".pdf", 'I');
+   		}
+   		else if ($modo=="crea")
+   		{
+   			$this->pdf->Output(APPPATH . "../pdf/fact_pedido_n" . $pedido[0]['cod_pedido'] . ".pdf", 'F');
+   			//$cuerpo = $this->load->view('lista_pedidos', 0, true);
+   			//$this->Plantilla($cuerpo);
+   		}
    		//Podemos mostrar con I, descargar con D, o guardar con F
-   		//$this->pdf->Output($pedido['id'].".pdf", 'I');
-   		//$this->pdf->Output("Lista de provincias.pdf", 'D');
-   		$this->pdf->Output(APPPATH . "../pdf/fact_pedido_n" . $pedido[0]['cod_pedido'] . ".pdf", 'F');
-   		//$this->pdf->Output(APPPATH . "../pdf/fact_pedido_n" . $pedido[0]['cod_pedido'] . ".pdf", 'I');
+   		
+   		
+   		//$this->pdf->Output(APPPATH . "../pdf/fact_pedido_n" . $pedido[0]['cod_pedido'] . ".pdf", 'D');
+   		
+   		/*$cuerpo = $this->load->view('lista_pedidos', 0, true);
+   		$this->Plantilla($cuerpo);*/
    	
    }
-   
+
+/**
+ * Método para enviar email con la factura
+ * @param integer $id_pedido ID del pedido del que enviamos factura
+ */
 function enviar_email($id_pedido)
    {
    	//obtenemos los datos del pedido
@@ -427,7 +508,7 @@ function enviar_email($id_pedido)
    	//obtenemos los datos del usuario
    	$nombre_user=$this->session->userdata('user');
    	$usuario=$this->mod_usuarios->buscar_usuario($nombre_user);
-   	//print_r($pedido);
+   	
    	$config['protocol'] = 'smtp';
    	$config['smtp_host'] = 'mail.iessansebastian.com';
    	$config['smtp_user'] = 'aula4@iessansebastian.com';
@@ -443,15 +524,16 @@ function enviar_email($id_pedido)
    	
    	$this->email->send();
    	
-   
    }
    
+   /**
+    * Método para crear el cuerpo del mensaje del email de detalles del pedido
+    * @return string $mensaje HTML que contendrá el email de detalles
+    */
    function crear_mensaje()
    {
-   		//$datos_pedido=$this->mod_pedidos->buscar_pedido($pedido);
    		
    		$productos = $this->cart->contents();
-   		//$fecha_pedido=$this->transformar_fecha($datos_pedido[0]['fecha']);
    		
    		//Iniciamos parte del emsanje a enviar
    		
@@ -469,21 +551,21 @@ function enviar_email($id_pedido)
    		            	
    		            	
    		return $mensaje;
-
-   		//print_r($mensaje);
-   		            	
-   		        	
    		
    }
    
+   /**
+    * Método para enviar email con detalles del pedido
+    * @param string $texto HTML del email de detalles del pedido
+    * @param string $id_pedido ID del pedido del que enviamos los detalles
+    */
    function envio_detalles($texto,$id_pedido)
    {
-   	//obtenemos los datos del pedido
-   	//$datos_pedido = $this->mod_pedidos->buscar_pedido($id_pedido);
+   	
    	//obtenemos los datos del usuario
    	$nombre_user=$this->session->userdata('user');
    	$usuario=$this->mod_usuarios->buscar_usuario($nombre_user);
-   	//print_r($pedido);
+   	
    	$config['protocol'] = 'smtp';
    	$config['smtp_host'] = 'mail.iessansebastian.com';
    	$config['smtp_user'] = 'aula4@iessansebastian.com';
@@ -494,9 +576,8 @@ function enviar_email($id_pedido)
    	$this->email->to($usuario[0]['correo']);
    	$this->email->subject('Detalle Pedido '.$id_pedido);
    	$this->email->message($texto);
-   	//$fileName=APPPATH."../pdf/fact_pedido_n".$id_pedido.".pdf";
-   	//$this->email->attach($fileName);
    	
    	$this->email->send();
+   	
    }
 }

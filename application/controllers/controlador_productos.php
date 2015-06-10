@@ -3,11 +3,22 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require(__DIR__.'/controlador.php');
 
+/**
+ * Controlador Productos
+ * Contiene toda la funcionalidad de la muestra de los productos
+ * @author Mario Vilches Nieves
+ */
+
 class controlador_productos extends controlador {
     function __construct() {
         parent::__construct();
     }
   
+    /**
+     * Método para mostrar los productos de cada categoría
+     * @param string $categoria Nombre de la categoría a mostrar
+     * @param number $inicio Inicio de los productos a mostrar
+     */
     function productos_categoria($categoria, $inicio = 0) 
     {
         //parametros para el paginador
@@ -26,11 +37,13 @@ class controlador_productos extends controlador {
         $this->Plantilla($cuerpo);
     }
     
+    /**
+     * Método que muestra los detalles de un producto en concreto
+     * @param integer $id ID del producto a mostrar
+     */
     function mostrar_detalles($id)
     {
     	$productos=$this->mod_productos->detalle_producto($id);
-    	
-    	//print_r($productos);
     	
     	$datas['productos']=$productos;
     	

@@ -1,10 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Controlador genérico
+ * Contiene la funcionalidad del cargar la plantilla y de la paginación
+ * @author Mario Vilches Nieves
+ */
 class controlador extends CI_Controller {
 	
 	/**
 	 * Carga la plantilla con la apariencia (cabecera, cuerpo y pie).
-	 * @param unknown $cuerpo
+	 * @param string $cuerpo Contiene el contendi del cuerpo de la web
 	 */
 	function Plantilla($cuerpo)
 	{

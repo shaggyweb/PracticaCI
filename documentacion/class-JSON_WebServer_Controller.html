@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class JSON_WebServer_Controller | Documentacion</title>
+
+	<link rel="stylesheet" href="resources/style.css?331665766">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Packages</h3>
+			<ul>
+				<li class="active">
+					<a href="package-CodeIgniter.html">
+						CodeIgniter<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="package-CodeIgniter.Libraries.html">
+						Libraries					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="package-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-JSON_WebServer_Controller.html">JSON_WebServer_Controller</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-CodeIgniter.Libraries.html" title="Summary of CodeIgniter\Libraries"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class JSON_WebServer_Controller</h1>
+
+
+	<div class="description">
+	<p>Clase base para los controladores que deseen realizar de servidores
+de la clase JSON_WebClient</p>
+
+<p>Basado en el
+<a href="http://www.programacionweb.net/articulos/articulo/sencillo-servicio-web-json-con-php">
+siguiente artículo Web Services JSON con PHP</a></p>
+
+<p>Los métodos ser invocarán pasando la información de la llamada en formato
+JSON. La información trasmitida en el objeto JSON tendrá la siguiente
+estructura array('method'=>'nombre', 'arguments'=>'argumentos')<br/>
+Donde</p>
+
+<ul> <li>method: Será el nombre del metodo del controlador a invocar, que deberá estar definido como public o protected</li> <li>arguments: Serán los argumentos a pasar a la función. Será un valor simple o un array si hay más de un parámetro.</li>
+</ul>
+
+<p>Las funciones que se implementen en el controlador deberán ser public o
+protected para que puedan ser invocadas desde la clase
+JSON_WebServer_Controller</p>
+
+<p>Para cada método llamado se devolverá en JSON un objeto con el siguiente
+formato array('error'=>'', 'return'=>'', 'debug'=>'')</p>
+
+<ul> <li>error: Indica si la llamada ha tenido (FALSE) o no (TRUE) exito</li> <li>return: valor devuelto. Si hay error será la descripción del error en otro caso lo que devuelva la función.</li> <li>debug: Si está activado el modo depuración en el servidor se devolverá información sobre los parámetros recibidos</li>
+</ul>
+
+<p>Ejemplo de uso</p>
+
+<pre><span class="php-keyword1">require_once</span>(APPPATH.<span class="php-quote">'/libraries/JSON_WebServer_Controller.php'</span>);
+
+<span class="php-keyword1">class</span> Operaciones <span class="php-keyword1">extends</span> JSON_WebServer_Controller {
+
+<span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct()
+{
+parent::__construct();
+
+<span class="php-comment">// Activamos o no depuración</span>
+<span class="php-var">$this</span>-&gt;Debug(self::DEBUG);
+
+<span class="php-comment">// Registramos funciones disponibles</span>
+<span class="php-var">$this</span>-&gt;RegisterFunction(<span class="php-quote">'Suma(op1, op2)'</span>, <span class="php-quote">'Devuelve la suma de los dos números'</span>);
+<span class="php-var">$this</span>-&gt;RegisterFunction(<span class="php-quote">'Cuadrado(num)'</span>, <span class="php-quote">'Devuelve el cuadrado de un número'</span>);
+
+}
+
+<span class="php-comment">// NOTA: No sobreescribir el método Index() pues esta ya está implementado</span>
+<span class="php-comment">// en la clase base y es el que se encarga de realizar toda la funcionalidad</span>
+
+<span class="php-comment">// Devuelve la suma de dos números</span>
+<span class="php-comment">// La función no puede ser privada o tendremos un error</span>
+<span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> Suma(<span class="php-var">$op1</span>, <span class="php-var">$op2</span>)
+{
+<span class="php-keyword1">return</span> <span class="php-var">$op1</span>+<span class="php-var">$op2</span>;
+}
+
+
+<span class="php-comment">// Devuelve el cuadrado de un número</span>
+<span class="php-comment">// La función no puede ser privada o tendremos un error</span>
+<span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> Cuadrado(<span class="php-var">$num</span>)
+{
+<span class="php-keyword1">return</span> <span class="php-var">$num</span>*<span class="php-var">$num</span>;
+}
+}</pre>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+CI_Controller
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>JSON_WebServer_Controller</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		<b>Abstract</b><br>
+		
+		
+		<b>Package:</b> CodeIgniter\Libraries<br>
+
+				<b>Category:</b>
+				Servicios_Web
+<br>
+				<b>License:</b>
+				<a href="MIT">MIT</a><br>
+				<b>Author:</b>
+				Santiago D.
+<br>
+				<b>Version:</b>
+				0.0.1
+<br>
+				<b>Link</b>
+				
+<br>
+		<b>Located at</b> <a href="source-class-JSON_WebServer_Controller.html#3-366" title="Go to source code">libraries/json_webserver_controller.php</a><br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="Index" id="_Index">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Index">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#121-137" title="Go to source code">Index</a>( )</code>
+
+		<div class="description short">
+			
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="RegisterFunction" id="_RegisterFunction">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_RegisterFunction">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#208-219" title="Go to source code">RegisterFunction</a>( <span>string <var>$signature</var></span>, <span>string <var>$help</var></span> )</code>
+
+		<div class="description short">
+			<p>Documenta las funciones disponibles. Se utilizará para mostrar
+ayuda al acceder al controlador sin indicación de ningún método</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Documenta las funciones disponibles. Se utilizará para mostrar
+ayuda al acceder al controlador sin indicación de ningún método</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$signature</var></dt>
+					<dd>
+</dd>
+					<dt><var>$help</var></dt>
+					<dd>
+</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="Debug" id="_Debug">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_Debug">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#221-230" title="Go to source code">Debug</a>( <span>type <var>$estado</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+
+		<div class="description short">
+			<p>Activa o desactiva la información de depuración en el servidor
+Debug(), Debug(true) -> Activa
+Debug(false) -> Desactiva</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Activa o desactiva la información de depuración en el servidor
+Debug(), Debug(true) -> Activa
+Debug(false) -> Desactiva</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$estado</var></dt>
+					<dd>
+</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="ReturnError" id="_ReturnError">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_ReturnError">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#291-302" title="Go to source code">ReturnError</a>( <span>string <var>$descripcion</var></span> )</code>
+
+		<div class="description short">
+			<p>Devuelve como resultado error en la operación solicitada. Se indica
+el motivo del error.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Devuelve como resultado error en la operación solicitada. Se indica
+el motivo del error.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$descripcion</var></dt>
+					<dd>
+</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="ReturnValues" id="_ReturnValues">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_ReturnValues">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#304-314" title="Go to source code">ReturnValues</a>( <span>mixed <var>$value</var></span> )</code>
+
+		<div class="description short">
+			<p>Devuelve el resultado de la función</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Devuelve el resultado de la función</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd>Valor devuelto, cualquier tipo convertible en JSON
+</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="ShowHelp" id="_ShowHelp">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_ShowHelp">#</a>
+		<code><a href="source-class-JSON_WebServer_Controller.html#336-365" title="Go to source code">ShowHelp</a>( )</code>
+
+		<div class="description short">
+			<p>Muestra la ayuda sobre los métodos que se han publicado para el
+controlador</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Muestra la ayuda sobre los métodos que se han publicado para el
+controlador</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="documentacionFunciones" id="$documentacionFunciones">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-JSON_WebServer_Controller.html#85-96" title="Go to source code"><var>$documentacionFunciones</var></a>
+
+			<div class="description short">
+				<p>Array que contiene la documentación de las funciones que proporcionara
+el servicio y que automáticamente se publicará si se accede al
+controlador.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Array que contiene la documentación de las funciones que proporcionara
+el servicio y que automáticamente se publicará si se accede al
+controlador.</p>
+
+<p>Cada elemento decribira del array describirá las funciones disponibles
+con el array siguiente array('signature'=>'text', 'help'=>'text')</p>
+
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$documentacionFunciones" class="anchor">#</a>
+				<code><span class="php-keyword1">array</span>()</code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="debug" id="$debug">
+		<td class="attributes"><code>
+			protected  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-JSON_WebServer_Controller.html#98-102" title="Go to source code"><var>$debug</var></a>
+
+			<div class="description short">
+				<p>Indica si está activa la depuración</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Indica si está activa la depuración</p>
+
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$debug" class="anchor">#</a>
+				<code><span class="php-keyword1">FALSE</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="debug_input_params" id="$debug_input_params">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-JSON_WebServer_Controller.html#104-108" title="Go to source code"><var>$debug_input_params</var></a>
+
+			<div class="description short">
+				<p>Si estamos depurando se registran los parámetros de entrada recibidos</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Si estamos depurando se registran los parámetros de entrada recibidos</p>
+
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$debug_input_params" class="anchor">#</a>
+				<code><span class="php-quote">''</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Documentacion API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?721046668"></script>
+<script src="elementlist.js?537903116"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 </div>
 <div name="productos">
 	<table class="table table-hover">
-		<tr><th>Producto</th><th>Precio Sin Descuento</th><th>Precio Descuento</th><th>Unidades</th></tr>
+		<tr><th>Producto</th><th>Precio Sin Descuento</th><th>Precio Descuento</th><th>Unidades</th><th>+1 Unid</th><th>-1 Unid</th><th>Eliminar</th></tr>
         
 			<?php foreach ($productos as $producto) : ?>
 			<tr>

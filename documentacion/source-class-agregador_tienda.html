@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+
+	<title>File controllers/agregador_tienda.php | Documentacion</title>
+
+	<link rel="stylesheet" href="resources/style.css?331665766">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Packages</h3>
+			<ul>
+				<li>
+					<a href="package-CodeIgniter.html">
+						CodeIgniter<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="package-CodeIgniter.Libraries.html">
+						Libraries					</a>
+
+						</li>
+							</ul></li>
+				<li class="active">
+					<a href="package-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-agregador_tienda.html">agregador_tienda</a></li>
+				<li><a href="class-controlador.html">controlador</a></li>
+				<li><a href="class-controlador_carrito.html">controlador_carrito</a></li>
+				<li><a href="class-controlador_productos.html">controlador_productos</a></li>
+				<li><a href="class-controlador_usuarios.html">controlador_usuarios</a></li>
+				<li><a href="class-FPDF.html">FPDF</a></li>
+				<li><a href="class-inicio.html">inicio</a></li>
+				<li><a href="class-mod_pedidos.html">mod_pedidos</a></li>
+				<li><a href="class-mod_productos.html">mod_productos</a></li>
+				<li><a href="class-mod_provincias.html">mod_provincias</a></li>
+				<li><a href="class-mod_usuarios.html">mod_usuarios</a></li>
+				<li><a href="class-Pdf.html">Pdf</a></li>
+				<li><a href="class-PDF.html" class="invalid">PDF</a></li>
+				<li><a href="class-TTFParser.html">TTFParser</a></li>
+				<li><a href="class-Welcome.html">Welcome</a></li>
+			</ul>
+
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-Error.html">Error</a></li>
+				<li><a href="function-GetInfoFromTrueType.html">GetInfoFromTrueType</a></li>
+				<li><a href="function-GetInfoFromType1.html">GetInfoFromType1</a></li>
+				<li><a href="function-LoadMap.html">LoadMap</a></li>
+				<li><a href="function-MakeDefinitionFile.html">MakeDefinitionFile</a></li>
+				<li><a href="function-MakeFont.html">MakeFont</a></li>
+				<li><a href="function-MakeFontDescriptor.html">MakeFontDescriptor</a></li>
+				<li><a href="function-MakeFontEncoding.html">MakeFontEncoding</a></li>
+				<li><a href="function-MakeWidthArray.html">MakeWidthArray</a></li>
+				<li><a href="function-Message.html">Message</a></li>
+				<li><a href="function-Notice.html">Notice</a></li>
+				<li><a href="function-SaveToFile.html">SaveToFile</a></li>
+				<li><a href="function-Warning.html">Warning</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-None.html" title="Summary of None"><span>Package</span></a>
+			</li>
+			<li>
+				<a href="class-agregador_tienda.html" title="Summary of agregador_tienda"><span>Class</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<pre><code><span id="1" class="l"><a class="l" href="#1"> 1: </a><span class="xlang">&lt;?php</span> <span class="php-keyword1">if</span> (!<span class="php-keyword2">defined</span>(<span class="php-quote">'BASEPATH'</span>)) <span class="php-keyword1">exit</span>(<span class="php-quote">'No direct script access allowed'</span>);
+</span><span id="2" class="l"><a class="l" href="#2"> 2: </a><span class="php-keyword1">require_once</span>(APPPATH . <span class="php-quote">'/libraries/json_webserver_controller.php'</span>);
+</span><span id="3" class="l"><a class="l" href="#3"> 3: </a><span class="php-keyword1">class</span> <a id="agregador_tienda" href="#agregador_tienda">agregador_tienda</a> <span class="php-keyword1">extends</span> json_webserver_controller 
+</span><span id="4" class="l"><a class="l" href="#4"> 4: </a>{
+</span><span id="5" class="l"><a class="l" href="#5"> 5: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>() 
+</span><span id="6" class="l"><a class="l" href="#6"> 6: </a>    {
+</span><span id="7" class="l"><a class="l" href="#7"> 7: </a>        parent::__construct();
+</span><span id="8" class="l"><a class="l" href="#8"> 8: </a>        <span class="php-var">$this</span>-&gt;RegisterFunction(<span class="php-quote">'Total()'</span>, <span class="php-quote">'Devuelve el número de elementos que tenemos en la tienda'</span>);
+</span><span id="9" class="l"><a class="l" href="#9"> 9: </a>        <span class="php-var">$this</span>-&gt;RegisterFunction(<span class="php-quote">'Lista(offset, limit)'</span>, <span class="php-quote">'Devuelve una lista de productos de tamaño máximo [limit] comenzando desde la posición desde [offset]'</span>);
+</span><span id="10" class="l"><a class="l" href="#10">10: </a>    }
+</span><span id="11" class="l"><a class="l" href="#11">11: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_Total" href="#_Total">Total</a>() 
+</span><span id="12" class="l"><a class="l" href="#12">12: </a>    {
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;mod_productos-&gt;prod_destacados_total();
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    }
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_Lista" href="#_Lista">Lista</a>(<span class="php-var">$offset</span>, <span class="php-var">$limit</span>) 
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>    {
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>        <span class="php-var">$destacados</span> = <span class="php-var">$this</span>-&gt;mod_productos-&gt;prod_destacados(<span class="php-var">$offset</span>, <span class="php-var">$limit</span>);
+</span><span id="18" class="l"><a class="l" href="#18">18: </a>
+</span><span id="19" class="l"><a class="l" href="#19">19: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$destacados</span> <span class="php-keyword1">as</span> <span class="php-var">$clave</span> =&gt; <span class="php-var">$valor</span>) 
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>        {
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>            <span class="php-var">$lista</span>[] = [
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>                    <span class="php-quote">'nombre'</span> =&gt; <span class="php-var">$valor</span>[<span class="php-quote">&quot;nombre&quot;</span>],
+</span><span id="23" class="l"><a class="l" href="#23">23: </a>                    <span class="php-quote">'descripcion'</span> =&gt;<span class="php-var">$valor</span>[<span class="php-quote">&quot;descripcion&quot;</span>],
+</span><span id="24" class="l"><a class="l" href="#24">24: </a>                    <span class="php-quote">'precio'</span> =&gt; <span class="php-var">$valor</span>[<span class="php-quote">&quot;precio&quot;</span>],
+</span><span id="25" class="l"><a class="l" href="#25">25: </a>                    <span class="php-quote">'img'</span> =&gt; base_url(<span class="php-quote">'/Assets/img/'</span>.<span class="php-var">$valor</span>[<span class="php-quote">'imagen'</span>]),
+</span><span id="26" class="l"><a class="l" href="#26">26: </a>                    <span class="php-quote">'url'</span> =&gt; site_url(<span class="php-quote">'/controlador_productos/mostrar_detalles/'</span>.<span class="php-var">$valor</span>[<span class="php-quote">'id_prod'</span>])
+</span><span id="27" class="l"><a class="l" href="#27">27: </a>            ];
+</span><span id="28" class="l"><a class="l" href="#28">28: </a>        }
+</span><span id="29" class="l"><a class="l" href="#29">29: </a>        
+</span><span id="30" class="l"><a class="l" href="#30">30: </a>        <span class="php-keyword1">return</span> <span class="php-var">$lista</span>;
+</span><span id="31" class="l"><a class="l" href="#31">31: </a>    }
+</span><span id="32" class="l"><a class="l" href="#32">32: </a>}</span></code></pre>
+
+	<div id="footer">
+		Documentacion API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?721046668"></script>
+<script src="elementlist.js?537903116"></script>
+</body>
+</html>

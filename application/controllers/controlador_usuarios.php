@@ -2,9 +2,17 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require(__DIR__.'/controlador.php');
 
+/**
+ * Controlador Usuarios
+ * Contiene toda la funcionalidad sobre los usuarios
+ * @author Mario Vilches Nieves
+ */
 class controlador_usuarios extends controlador 
 {
 
+	/**
+	 * Método que da de alta en la BD de un usuario
+	 */
 	public function alta()
 	{
 		//Obtencion de todas las provincias para crear el select
@@ -23,7 +31,7 @@ class controlador_usuarios extends controlador
 		
 		//Edición de los mensajes de error
 		$this->form_validation->set_message('required', 'Error. Campo Requerido');
-		$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve dígitos');
+		$this->form_validation->set_message('exact_length', 'Error. Número de dígitos incorrecto');
 		$this->form_validation->set_message('valid_email', 'Error. Email no válido');
 		$this->form_validation->set_message('max_length', 'Error. Campo demasiado largo');
 		$this->form_validation->set_message('alpha', 'Error. El campo no puede contener números');
@@ -49,25 +57,13 @@ class controlador_usuarios extends controlador
 			
 			$this->mod_usuarios->alta_usuario($datos);
 			
-			//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-			
-			//$cabecera= $this->load->view("cabecera",$categoria, true);
-			
-			//$pie= $this->load->view("pie", 0, true);
-			
 			$cuerpo=$this->load->view('alta_exito',0,true);
 			
 			$this->Plantilla($cuerpo);
 			
-			//redirect(site_url());
 		}
 		else
 		{
-			//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-	
-			//$cabecera= $this->load->view("cabecera",$categoria, true);
-	
-			//$pie= $this->load->view("pie", 0, true);
 		
 			$cuerpo=$this->load->view('alta_usuario',$provincias,true);
 	
@@ -77,9 +73,9 @@ class controlador_usuarios extends controlador
 		
 		
 		/**
-		 * Valida el campo DNI
-		 * @param unknown $str
-		 * @return boolean
+		 * Método que valida un DNI
+		 * @param string $str Cadena a validar
+		 * @return boolean true si el DNI introducido es correcto
 		 */
 		public function DNI_valido($str) 
 		{
@@ -100,6 +96,10 @@ class controlador_usuarios extends controlador
 			return TRUE;
 		}
 		
+		/**
+		 * Método para loguear al usuario
+		 * Comprueba que el nombre de usuario y clave son correctos
+		 */
 		public function login()
 		{
 			//Establecimiento de las reglas de validación
@@ -125,24 +125,22 @@ class controlador_usuarios extends controlador
 				{
 					redirect(base_url());
 					
-					
 				}
-				
 					
 			}
 			
 		}
 		
+		/**
+		 * Método para modificar los datos de un usuario
+		 */
 		public function mod_usuario()
 		{
 			$usuario=$this->session->userdata('user');
 			
-			//print_r($usuario);
 			
 			//Obtencion de todas las provincias para crear el select
 			$datos['provincias'] = $this->mod_provincias->lista_provincias();
-			
-			//print_r($this->mod_usuarios->buscar_usuario($usuario)[0]);
 			
 			$datos['user']=$this->mod_usuarios->buscar_usuario($usuario)[0];
 			
@@ -153,19 +151,16 @@ class controlador_usuarios extends controlador
 			$this->form_validation->set_rules('direccion', 'direccion', 'trim|required');
 			$this->form_validation->set_rules('postal', 'postal', 'trim|required|integer|exact_length[5]');
 			$this->form_validation->set_rules('poblacion', 'poblacion', 'required|max_length[20]|xss_clean|alpha|trim');
-			//$this->form_validation->set_rules('password', 'password', 'trim|required');
-			//$this->form_validation->set_rules('usuario', 'usuario', 'trim|required');
 			$this->form_validation->set_rules('email', 'email', 'required|max_length[45]|valid_email|xss_clean|trim');
 			
 			//Edición de los mensajes de error
 			$this->form_validation->set_message('required', 'Error. Campo Requerido');
-			$this->form_validation->set_message('exact_length', 'Error. El DNI debe tener nueve dígitos');
+			$this->form_validation->set_message('exact_length', 'Error. Número de dígitos incorrecto');
 			$this->form_validation->set_message('valid_email', 'Error. Email no válido');
 			$this->form_validation->set_message('max_length', 'Error. Campo demasiado largo');
 			$this->form_validation->set_message('alpha', 'Error. El campo no puede contener números');
 			$this->form_validation->set_message('integer', 'Error. El campo solo puede contener números');
 			$this->form_validation->set_message('DNI_valido', 'Error. DNI no válido');
-			//$this->form_validation->set_message('comprobar_nombre', 'Error. Nombre de usuario ya usado');
 			
 			//da formato a los errores
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -180,9 +175,7 @@ class controlador_usuarios extends controlador
 				$user['cod_postal'] = $this->input->post('postal');
 				$user['cod_provincia'] = $this->input->post('select_provincias');
 				$user['poblacion'] = $this->input->post('poblacion');
-				//$user['usuario'] = $this->input->post('usuario');
 				$user['correo'] = $this->input->post('email');
-				//$user['clave'] = do_hash($this->input->post('password'),'md5');
 				
 				if($this->mod_usuarios->modificar_usuario($cod_usuario,$user))
 				{
@@ -190,26 +183,10 @@ class controlador_usuarios extends controlador
 					
 					$this->Plantilla($cuerpo);
 				} 
-					
 				
-					
-				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-					
-				//$cabecera= $this->load->view("cabecera",$categoria, true);
-					
-				//$pie= $this->load->view("pie", 0, true);
-					
-				
-					
-				//redirect(site_url());
 			}
 			else
 			{
-				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-			
-				//$cabecera= $this->load->view("cabecera",$categoria, true);
-			
-				//$pie= $this->load->view("pie", 0, true);
 			
 				$cuerpo=$this->load->view('mod_usuario',$datos,true);
 			
@@ -217,8 +194,13 @@ class controlador_usuarios extends controlador
 			}
 		}
 		
-		//Funcion que comprueba por un callback si el nombre de usuario que se introduce en el
-		//formulario de registro existe en la bd, en tal caso, muestra un mensaje de error
+		
+		/**
+		 * Método que comprueba el uso de un nombre de usuario
+		 * Permitirá que no se repitan nombres de usuario
+		 * @param unknown $nombre
+		 * @return boolean
+		 */
 		public function comprobar_nombre($nombre)
 		{
 		
@@ -226,7 +208,6 @@ class controlador_usuarios extends controlador
 		
 			if ($usuario)
 			{
-				//$this->form_validation->set_message('comprobarNombre', 'El nombre de usuario ya esta en uso, pruebe otro diferente');
 				return FALSE;
 			}
 			else
@@ -235,13 +216,15 @@ class controlador_usuarios extends controlador
 			}
 		}
 		
+		/**
+		 * Método previo para dar de baja a un usuario
+		 * Nos envía a una pantalla de confirmación
+		 */
 		public function dar_baja()
 		{
 			$usuario=$this->session->userdata('user');
 			
 			$datos['usuario']=$this->mod_usuarios->existe_nombre_user($usuario);
-			
-			//print_r($datos);
 			
 			$cuerpo=$this->load->view('dar_baja',$datos,true);
 			
@@ -249,14 +232,22 @@ class controlador_usuarios extends controlador
 			
 		}
 		
+		/**
+		 * Método que da de baja a un usuario
+		 * No se borra de la BD sino que se le pone a false en el campo activo de dicha BD
+		 * @param integer $cod Código del usuario a borrar
+		 */
 		public function baja_user($cod)
 		{
 			$this->mod_usuarios->baja_user($cod);
 			
-			//Al borrar el usuario (ponerlo no activo) cerramos la sesión de dicho usuario
+			//cerramos la sesión de dicho usuario
 			$this->logout();
 		}
 		
+		/**
+		 * Método que cierra la sesión de un usuario
+		 */
 		public function logout()
 		{
 			$this->session->unset_userdata('user'); //cierre de sesión
@@ -264,6 +255,9 @@ class controlador_usuarios extends controlador
 			redirect(site_url());
 		}
 		
+		/**
+		 * Método para que el usuario pueda recuperar una contraseña
+		 */
 		public function reestablecer_pass()
 		{
 			$this->form_validation->set_rules('email', 'email', 'required|max_length[45]|valid_email|xss_clean|trim');
@@ -278,44 +272,32 @@ class controlador_usuarios extends controlador
 				$email = $this->input->post('email');
 				//comprobamos que existe el email en la BD
 				$query = $this->mod_usuarios->comprobar_mail($email);
-				if ($query) //la consulta devuelve algún registro ppor lo que el email esta en la BD
+				if ($query) //la consulta devuelve algún registro por lo que el email esta en la BD
 				{
 					$usuario['nombre'] = $query['usuario'];
 					$usuario['email'] = $query['correo'];
-					//$pass['password'] = md5('123456');
 					$cod_user= $query['cod_usuario'];
 					$cadena_aleatoria=$this->generar_cadena();
 					$nuevo_pass=do_hash($cadena_aleatoria,'md5');
-					//print_r($cod_user);
-					//print_r($nuevo_pass);
+					
 					$this->mod_usuarios->nuevo_password($cod_user,$nuevo_pass);
 					$this->enviar_pass($cadena_aleatoria, $usuario);
 					
 					$cuerpo=$this->load->view('nuevo_pass_ok','',true);
 					
 					$this->Plantilla($cuerpo);
-					
-					
-					
+	
+				}
+				else
+				{
+					$cuerpo=$this->load->view('error_email','',true);
+					$this->Plantilla($cuerpo);
 				}
 				
-					
-				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-					
-				//$cabecera= $this->load->view("cabecera",$categoria, true);
-					
-				//$pie= $this->load->view("pie", 0, true);
-					
-					
-				//redirect(site_url());
+				
 			}
 			else
 			{
-				//$categoria['categoria'] = $this->mod_productos->listar_categorias();
-			
-				//$cabecera= $this->load->view("cabecera",$categoria, true);
-			
-				//$pie= $this->load->view("pie", 0, true);
 			
 				$cuerpo=$this->load->view('reestablecer_pass','',true);
 				$this->Plantilla($cuerpo);
@@ -324,6 +306,11 @@ class controlador_usuarios extends controlador
 		}
 		
 		//http://www.elcodigofuente.com/usando-rand-crear-cadena-aleatoria-806/
+		/**
+		 * Método para generar una cadena de caracteres aleatoria para el nuevo password
+		 * La cadena será de cuatro caracteres
+		 * @return string
+		 */
 		public function generar_cadena()
 		{
 			$caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"; //posibles caracteres a usar
@@ -336,7 +323,12 @@ class controlador_usuarios extends controlador
 			}
 			return $cadena;
 		}
-
+		
+		/**
+		 * Método que envía el nuevo password al usuario
+		 * @param string $nuevo_pass Nuevo password del usuario
+		 * @param array $user Array que contiene los datos del usuario
+		 */
 		public function enviar_pass($nuevo_pass,$user)
 		{
 				$config['protocol'] = 'smtp';
@@ -349,8 +341,6 @@ class controlador_usuarios extends controlador
 				$this->email->to($user['email']);
 				$this->email->subject('Nuevo Password');
 				$this->email->message("<html><body><h2>Su nuevo password es: ".$nuevo_pass."</h2></body></html>");
-				//$fileName=APPPATH."../pdf/fact_pedido_n".$id_pedido.".pdf";
-				//$this->email->attach($fileName);
 			
 				$this->email->send();
 			

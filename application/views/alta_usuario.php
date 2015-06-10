@@ -1,3 +1,7 @@
+<div class="alert alert-info">
+		<div class="titulo"><?="Nuevo Usuario"?></div>
+</div>
+<div>
 <form method="post" action="<?=base_url('index.php/controlador_usuarios/alta')?>">
 	<table>
 		<tr>
@@ -43,3 +47,4 @@
 		<tr><td><input type="submit" class="btn btn-primary" name="enviar" value="Enviar"/></td></tr>
 	</table>
 </form>
+</div>
